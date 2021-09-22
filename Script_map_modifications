@@ -1,0 +1,41 @@
+library(terra)
+library(dplyr)
+
+#Download the Habitat Type map of Iceland available here: https://en.ni.is/resources/publications/maps/habitat-types-and-important-bird-areas
+#Place the Geotiff and text files in the same folder, make this your working directory
+
+#Open original Geotiff at 5m resolution
+type_5m <- rast("ni_vg25r_2utg.tif", is.factor(TRUE))
+
+###Change the resolution of the Habitat Type map (narrow classes but lower spatial resolution)
+#Change the resolution to 10m
+aggregate(type_5m, fact=2, fun="modal",dissolve=TRUE, overwrite=TRUE, filename="type_10m.tif",wopt=list(datatype="INT1U"))
+
+#Change the resolution to 20m
+aggregate(type_5m, fact=4, fun="modal",dissolve=TRUE, overwrite=TRUE, filename="type_20m.tif",wopt=list(datatype="INT1U"))
+
+#Change the resolution to 50m
+aggregate(type_5m, fact=10, fun="modal",dissolve=TRUE, overwrite=TRUE, filename="type_50m.tif",wopt=list(datatype="INT1U"))
+
+
+###Transform the Habitat Type map into an Habitat Class Map (i.e., use broad land type categories)
+#Retrieve the map classification categories
+map_classification <- read.table("map_classification.txt", header=TRUE)
+
+#Keep only the column for the code to reclassify the raster
+rcl <- map_classification%>% select(type_code, class_code)
+
+##Change the spatial resolution of the Habitat Class map
+#Create Geotiff of classes at 5m resolution
+class_5m <- classify(type_5m, rcl, othersNA=TRUE,filename="class_5m.tif",wopt=list(datatype="INT1U"), overwrite=TRUE)
+
+#Create Geotiff of classes at 10m resolution
+aggregate(class_5m, fact=2, fun="modal",dissolve=TRUE, overwrite=TRUE, filename="class_10m.tif",wopt=list(datatype="INT1U"))
+
+#Create Geotiff of classes at 20m resolution
+aggregate(class_5m, fact=4, fun="modal",dissolve=TRUE, overwrite=TRUE, filename="class_20m.tif",wopt=list(datatype="INT1U"))
+
+
+########This is the most recommended file#######
+#Create Geotiff of classes at 50m resolution
+aggregate(class_5m, fact=10, fun="modal",dissolve=TRUE, overwrite=TRUE, filename="class_50m.tif",wopt=list(datatype="INT1U"))
