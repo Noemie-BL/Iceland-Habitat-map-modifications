@@ -1,5 +1,4 @@
 # Iceland-Habitat-map-modifications
-Script to modify the Habitat Types map of Iceland
 
 This script will allow user to modify the Habitat Types map of Iceland to use at different resolutions and with either the narrow Habitat Types or broader Habitat classes. Based on preliminary field validation, the highest acuracy is obtained when using the Habitat classes at a 50m resolution.
 
