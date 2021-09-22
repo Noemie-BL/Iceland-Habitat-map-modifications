@@ -1,8 +1,10 @@
+#Download the Habitat Type map of Iceland available here: https://en.ni.is/resources/publications/maps/habitat-types-and-important-bird-areas
+#Download the "map_classification.txt" file from GitHub
+#Place the Geotiff and text files in the same folder, make this your working directory
+
+
 library(terra)
 library(dplyr)
-
-#Download the Habitat Type map of Iceland available here: https://en.ni.is/resources/publications/maps/habitat-types-and-important-bird-areas
-#Place the Geotiff and text files in the same folder, make this your working directory
 
 #Open original Geotiff at 5m resolution
 type_5m <- rast("ni_vg25r_2utg.tif", is.factor(TRUE))
